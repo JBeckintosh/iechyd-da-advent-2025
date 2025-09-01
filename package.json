@@ -1,0 +1,32 @@
+{
+  "name": "candy-cane-advent-calendar",
+  "version": "1.0.0",
+  "description": "A beautiful candy cane themed advent calendar website with daily challenges",
+  "main": "index.html",
+  "scripts": {
+    "start": "open index.html",
+    "dev": "python -m http.server 8000",
+    "serve": "npx http-server -p 8000"
+  },
+  "keywords": [
+    "advent-calendar",
+    "candy-cane",
+    "christmas",
+    "fitness",
+    "challenges",
+    "responsive",
+    "mobile-first"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/candy-cane-advent-calendar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/candy-cane-advent-calendar/issues"
+  },
+  "homepage": "https://github.com/yourusername/candy-cane-advent-calendar#readme"
+}
