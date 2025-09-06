@@ -314,8 +314,10 @@ class AdventCalendar {
         
         // Check if game should end
         if (this.bopItGame.exerciseCount >= this.bopItGame.maxExercises) {
-            this.endBopItGame();
-            return;
+            setTimeout(() => {
+                this.endBopItGame();
+                return;
+            }, 2500);
         }
         
         // Schedule next exercise
