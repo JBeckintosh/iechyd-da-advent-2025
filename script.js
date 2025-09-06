@@ -7,7 +7,7 @@ class AdventCalendar {
         ];
 
         this.bopItExercises = [
-            "Burpee", "Press Up", "Squat", "Sit Up", "Star Jump"
+            "Burpee", "Press Up", "Squat", "Star Jump"
         ];
         
         this.randomReps = [
@@ -354,7 +354,7 @@ class AdventCalendar {
     speakExercise(exercise) {
         if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(exercise);
-            utterance.rate = 4.0;
+            utterance.rate = 2.5;
             utterance.pitch = 1.0;
             utterance.volume = 2.0;
             speechSynthesis.speak(utterance);
