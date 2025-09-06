@@ -50,7 +50,7 @@ class AdventCalendar {
             { day: 21, title: "End Of Weak #3: Deadlifts in a winter wonderland", content: "Another 7 days down, so max Deadlift for 7 reps" },
             { day: 22, title: "All I want for Christmas is glutes", content: "22 lunges for each leg" },
             { day: 23, title: "Come Bearing Gifts And Arms", content: "23 Pistol Squats for each leg" },
-            { day: 24, title: "Secret Santa!", content: "24 reps of the Secret Santa exercise exchange" }
+            { day: 24, title: "Secret Santa!", content: "24 reps of the Secret Santa exercise exchange. <br/><br/> If no-one has been in touch, you're off the hook and merry xmas!" }
         ];
         
         this.currentDay = new Date().getDate();
