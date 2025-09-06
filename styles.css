@@ -238,6 +238,7 @@ html {
         padding: 1rem;
         margin: 0 0.5rem;
         border-radius: 16px;
+        height: 43vh;
     }
     
     /* Day labels mobile styling */
