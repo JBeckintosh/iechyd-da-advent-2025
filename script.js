@@ -2,13 +2,29 @@ class AdventCalendar {
     constructor() {
         this.randomExercises = [
             "Push-ups", "Squats", "Burpees", "Lunges", "Mountain Climbers", "Jumping Jacks",
-            "High Knees", "Arm Circles", "Lying Leg Raises", "Bicycle Crunches",
-            "Russian Twists", "Tricep Dips", "Pike Push-ups", "Bear Crawls", "Crab Walks"
+            "High Knees", "Lying Leg Raises", "Bicycle Crunches", "Russian Twists",
+            "Tricep Dips", "Pike Push-ups", "Bear Crawls", "Crab Walks"
+        ];
+
+        this.bopItExercises = [
+            "Burpee", "Press Up", "Squat", "Sit Up", "Star Jump"
         ];
         
         this.randomReps = [
             3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45
         ];
+        
+        // Bop It! game properties
+        this.bopItGame = {
+            isRunning: false,
+            currentExercise: null,
+            exerciseCount: 0,
+            timer: null,
+            currentInterval: 5000, // Start with 5 seconds
+            minInterval: 500, // Minimum 0.5 seconds
+            intervalDecrease: 250, // Decrease by 250ms each time
+            maxExercises: 24 // Maximum number of exercises
+        };
         
         this.challenges = [
             { day: 1, title: "Silent Plank, Holy Plank!", content: "Plank for 1 minute!" },
@@ -25,7 +41,7 @@ class AdventCalendar {
             { day: 12, title: "The Sillier, The Merrier", content: "Lift something silly 12 times" },
             { day: 13, title: "Hyrox Class #2: Jingle Bell, Jingle Bell, Jingle Bell Rox", content: "13 Press ups, 13 Burpees, 13 Lunges, 13 Squat Jumps, 13 Star Jumps" },
             { day: 14, title: "End Of Weak #2: Squat like there's snow tomorrow", content: "Another 7 days down, so max Squat for 7 reps" },
-            { day: 15, title: "Bop It!", content: "To be added later" },
+            { day: 15, title: "Bop It!", content: "bopItGame" },
             { day: 16, title: "A run that keeps on giving", content: "Run for 16 seconds, then walk for 16 seconds. Repeat 16 times 🏃‍♂️" },
             { day: 17, title: "Tis The Burpees To Be Jolly", content: "17 lengths of burpee broad jumps" },
             { day: 18, title: "In High Spirits", content: "18 reps of ground to overhead (use whatever you have on hand)" },
@@ -161,6 +177,42 @@ class AdventCalendar {
             
             // Add event listeners to exercise buttons
             this.setupExerciseButtons();
+        } else if (day === 15) {
+            modalContent.innerHTML = `
+                <h4 class="font-bold text-slate-800 mb-6">${challenge.title}</h4>
+                <div class="text-center">
+                    <div id="bopItInstructions" class="mb-6 p-6 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg border-2 border-blue-300">
+                        If you aren't familiar with the Bop It game, it asks your to do a task which you have to finish before the timer runs out.
+                        This is an exercise version of that game
+                        You may want to turn the volume all the way up
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div id="bopItDisplay" class="mb-6 p-6 bg-gradient-to-r from-red-100 to-red-200 rounded-lg border-2 border-red-300">
+                        <h5 class="text-xl font-bold text-slate-800 mb-2">Get Ready!</h5>
+                        <p class="text-lg text-gray-700" id="bopItExercise">Click Start to begin</p>
+                        <div id="bopItCountdown" class="text-3xl font-bold text-red-600 mt-4 hidden">3</div>
+                    </div>
+                    <div class="space-y-3">
+                        <button id="bopItStart" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
+                            Bop It!
+                        </button>
+                        <button id="bopItStop" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 hidden">
+                            Stop Game
+                        </button>
+                        <button id="bopItReset" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
+                            Reset
+                        </button>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p>Exercise #<span id="exerciseNumber">0</span> of <span id="maxExercises">20</span></p>
+                        <p>Next exercise in: <span id="timeRemaining">-</span> seconds</p>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners to Bop It! buttons
+            this.setupBopItButtons();
         } else {
             modalContent.innerHTML = `
                 <h4 class="font-bold text-slate-800 mb-3">${challenge.title}</h4>
@@ -195,6 +247,163 @@ class AdventCalendar {
         exerciseResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     
+    setupBopItButtons() {
+        const startBtn = document.getElementById('bopItStart');
+        const stopBtn = document.getElementById('bopItStop');
+        const resetBtn = document.getElementById('bopItReset');
+        
+        startBtn.addEventListener('click', () => this.startBopItGame());
+        stopBtn.addEventListener('click', () => this.stopBopItGame());
+        resetBtn.addEventListener('click', () => this.resetBopItGame());
+    }
+    
+    startBopItGame() {
+        if (this.bopItGame.isRunning) return;
+        
+        this.bopItGame.isRunning = true;
+        this.bopItGame.exerciseCount = 0;
+        this.bopItGame.currentInterval = 5000; // Reset to 5 seconds
+        
+        // Update UI
+        document.getElementById('bopItStart').classList.add('hidden');
+        document.getElementById('bopItStop').classList.remove('hidden');
+        document.getElementById('maxExercises').textContent = this.bopItGame.maxExercises;
+        
+        // Start countdown
+        this.startBopItCountdown();
+    }
+    
+    startBopItCountdown() {
+        const countdownElement = document.getElementById('bopItCountdown');
+        const exerciseElement = document.getElementById('bopItExercise');
+        
+        countdownElement.classList.remove('hidden');
+        exerciseElement.textContent = 'Get Ready!';
+        
+        let count = 3;
+        countdownElement.textContent = count;
+        
+        const countdownTimer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                countdownElement.textContent = count;
+            } else {
+                clearInterval(countdownTimer);
+                countdownElement.classList.add('hidden');
+                this.nextBopItExercise();
+            }
+        }, 1000);
+    }
+    
+    nextBopItExercise() {
+        if (!this.bopItGame.isRunning) return;
+        
+        this.bopItGame.exerciseCount++;
+        this.bopItGame.currentExercise = this.bopItExercises[Math.floor(Math.random() * this.bopItExercises.length)];
+        
+        // Update display
+        const exerciseElement = document.getElementById('bopItExercise');
+        const exerciseNumber = document.getElementById('exerciseNumber');
+        const timeRemaining = document.getElementById('timeRemaining');
+        
+        exerciseElement.textContent = this.bopItGame.currentExercise;
+        exerciseNumber.textContent = this.bopItGame.exerciseCount;
+        
+        // Speak the exercise
+        this.speakExercise(this.bopItGame.currentExercise);
+        
+        // Check if game should end
+        if (this.bopItGame.exerciseCount >= this.bopItGame.maxExercises) {
+            this.endBopItGame();
+            return;
+        }
+        
+        // Schedule next exercise
+        this.bopItGame.timer = setTimeout(() => {
+            this.nextBopItExercise();
+        }, this.bopItGame.currentInterval);
+        
+        // Update time remaining display
+        this.updateTimeRemaining();
+        
+        // Decrease interval for next time (but not below minimum)
+        this.bopItGame.currentInterval = Math.max(
+            this.bopItGame.minInterval,
+            this.bopItGame.currentInterval - this.bopItGame.intervalDecrease
+        );
+    }
+    
+    updateTimeRemaining() {
+        const timeRemaining = document.getElementById('timeRemaining');
+        const totalTime = this.bopItGame.currentInterval / 1000;
+        let remaining = totalTime;
+        
+        timeRemaining.textContent = remaining.toFixed(1);
+        
+        const updateTimer = setInterval(() => {
+            remaining -= 0.1;
+            if (remaining <= 0) {
+                clearInterval(updateTimer);
+                timeRemaining.textContent = '-';
+            } else {
+                timeRemaining.textContent = remaining.toFixed(1);
+            }
+        }, 100);
+    }
+    
+    speakExercise(exercise) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(exercise);
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            speechSynthesis.speak(utterance);
+        }
+    }
+    
+    stopBopItGame() {
+        this.bopItGame.isRunning = false;
+        if (this.bopItGame.timer) {
+            clearTimeout(this.bopItGame.timer);
+            this.bopItGame.timer = null;
+        }
+        
+        // Update UI
+        document.getElementById('bopItStart').classList.remove('hidden');
+        document.getElementById('bopItStop').classList.add('hidden');
+        document.getElementById('bopItExercise').textContent = 'Game Stopped';
+        document.getElementById('timeRemaining').textContent = '-';
+    }
+    
+    resetBopItGame() {
+        this.stopBopItGame();
+        this.bopItGame.exerciseCount = 0;
+        this.bopItGame.currentInterval = 5000;
+        this.bopItGame.currentExercise = null;
+        
+        // Update UI
+        document.getElementById('bopItExercise').textContent = 'Click Start to begin';
+        document.getElementById('exerciseNumber').textContent = '0';
+        document.getElementById('timeRemaining').textContent = '-';
+    }
+    
+    endBopItGame() {
+        this.bopItGame.isRunning = false;
+        if (this.bopItGame.timer) {
+            clearTimeout(this.bopItGame.timer);
+            this.bopItGame.timer = null;
+        }
+        
+        // Update UI
+        document.getElementById('bopItStart').classList.remove('hidden');
+        document.getElementById('bopItStop').classList.add('hidden');
+        document.getElementById('bopItExercise').textContent = '🎉 Congratulations! You completed all exercises! 🎉';
+        document.getElementById('timeRemaining').textContent = 'Complete!';
+        
+        // Speak completion message
+        this.speakExercise('Congratulations! You completed all exercises!');
+    }
+    
     setupEventListeners() {
         // Close modal
         document.getElementById('closeModal').addEventListener('click', () => this.closeModal());
@@ -210,6 +419,8 @@ class AdventCalendar {
     closeModal() {
         const modal = document.getElementById('challengeModal');
         modal.classList.add('hidden');
+
+        this.stopBopItGame();
     }
 }
 
