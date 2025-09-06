@@ -318,6 +318,7 @@ class AdventCalendar {
                 this.endBopItGame();
                 return;
             }, 2500);
+            return;
         }
         
         // Schedule next exercise
