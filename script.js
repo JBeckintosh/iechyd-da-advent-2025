@@ -1,9 +1,19 @@
 class AdventCalendar {
     constructor() {
+        this.randomExercises = [
+            "Push-ups", "Squats", "Burpees", "Lunges", "Mountain Climbers", "Jumping Jacks",
+            "High Knees", "Arm Circles", "Lying Leg Raises", "Bicycle Crunches",
+            "Russian Twists", "Tricep Dips", "Pike Push-ups", "Bear Crawls", "Crab Walks"
+        ];
+        
+        this.randomReps = [
+            3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45
+        ];
+        
         this.challenges = [
             { day: 1, title: "Silent Plank, Holy Plank!", content: "Plank for 1 minute!" },
             { day: 2, title: "Ski-sons Greetings", content: "2 laps of the block and 200m on the ski erg" },
-            { day: 3, title: "3 random exercises", content: "To be added later" },
+            { day: 3, title: "3 Exercises In Your Stocking", content: "exerciseButtons" },
             { day: 4, title: "Deck The Halls (with your fists)", content: "Punches for 4 minutes" },
             { day: 5, title: "5 Golden Kms", content: "Run/Walk/Cycle, 5 Golden Kms" },
             { day: 6, title: "Hyrox Class #1: Jingle Bell, Jingle Bell, Jingle Bell Rox", content: "6 Press ups, 6 Burpees, 6 Lunges, 6 Squat Jumps, 6 Star Jumps" },
@@ -128,12 +138,61 @@ class AdventCalendar {
         const modalContent = document.getElementById('modalContent');
         
         modalTitle.textContent = `Day ${day}`;
-        modalContent.innerHTML = `
-            <h4 class="font-bold text-slate-800 mb-3">${challenge.title}</h4>
-            <p class="text-gray-700 leading-relaxed">${challenge.content}</p>
-        `;
+        
+        if (day === 3) {
+            modalContent.innerHTML = `
+                <h4 class="font-bold text-slate-800 mb-6">${challenge.title}</h4>
+                <div class="space-y-4">
+                    <button class="exercise-btn w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200" data-exercise="1">
+                        Exercise #1
+                    </button>
+                    <button class="exercise-btn w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200" data-exercise="2">
+                        Exercise #2
+                    </button>
+                    <button class="exercise-btn w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200" data-exercise="3">
+                        Exercise #3
+                    </button>
+                </div>
+                <div id="exerciseResult" class="mt-6 p-4 bg-gray-100 rounded-lg hidden">
+                    <h5 class="font-bold text-slate-800 mb-2">Your Exercise:</h5>
+                    <p class="text-lg text-gray-700" id="exerciseText"></p>
+                </div>
+            `;
+            
+            // Add event listeners to exercise buttons
+            this.setupExerciseButtons();
+        } else {
+            modalContent.innerHTML = `
+                <h4 class="font-bold text-slate-800 mb-3">${challenge.title}</h4>
+                <p class="text-gray-700 leading-relaxed">${challenge.content}</p>
+            `;
+        }
         
         modal.classList.remove('hidden');
+    }
+    
+    setupExerciseButtons() {
+        const exerciseButtons = document.querySelectorAll('.exercise-btn');
+        exerciseButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const exerciseNumber = e.target.dataset.exercise;
+                this.generateRandomExercise(exerciseNumber);
+            });
+        });
+    }
+    
+    generateRandomExercise(exerciseNumber) {
+        const randomExercise = this.randomExercises[Math.floor(Math.random() * this.randomExercises.length)];
+        const randomReps = this.randomReps[Math.floor(Math.random() * this.randomReps.length)];
+        
+        const exerciseResult = document.getElementById('exerciseResult');
+        const exerciseText = document.getElementById('exerciseText');
+        
+        exerciseText.textContent = `${randomExercise} - ${randomReps} reps`;
+        exerciseResult.classList.remove('hidden');
+        
+        // Scroll to the result
+        exerciseResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     
     setupEventListeners() {
