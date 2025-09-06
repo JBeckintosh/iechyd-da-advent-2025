@@ -144,6 +144,7 @@ class AdventCalendar {
     }
     
     isLocked(day) {
+        return false;
         return this.currentMonth !== 11 || day > this.currentDay; // Only December, and not future days
     }
     
