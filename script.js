@@ -21,7 +21,7 @@ class AdventCalendar {
             exerciseCount: 0,
             timer: null,
             currentInterval: 5000, // Start with 5 seconds
-            minInterval: 500, // Minimum 0.5 seconds
+            minInterval: 1000, // Minimum 1 seconds
             intervalDecrease: 250, // Decrease by 250ms each time
             maxExercises: 24 // Maximum number of exercises
         };
@@ -354,9 +354,9 @@ class AdventCalendar {
     speakExercise(exercise) {
         if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(exercise);
-            utterance.rate = 1.0;
+            utterance.rate = 4.0;
             utterance.pitch = 1.0;
-            utterance.volume = 1.0;
+            utterance.volume = 2.0;
             speechSynthesis.speak(utterance);
         }
     }
