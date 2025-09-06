@@ -1,34 +1,32 @@
-class CandyCaneAdventCalendar {
+class AdventCalendar {
     constructor() {
         this.challenges = [
-            { day: 1, title: "Sweet Start", content: "Plank for 1 minute!" },
-            { day: 2, title: "Candy Cane Cardio", content: "2 laps of the block and 200m on the ski erg" },
+            { day: 1, title: "Silent Plank, Holy Plank!", content: "Plank for 1 minute!" },
+            { day: 2, title: "Ski-sons Greetings", content: "2 laps of the block and 200m on the ski erg" },
             { day: 3, title: "3 random exercises", content: "To be added later" },
-            { day: 4, title: "Stripe by Stripe", content: "Punches for 4 minutes" },
-            { day: 5, title: "Sweet Flexibility", content: "Run/Walk/Cycle, 5 Golden Kms" },
-            { day: 6, title: "Hyrox Class #1", content: "6 Press ups, 6 Burpees, 6 Squat Jumps, 6 Star Jumps" },
-            { day: 7, title: "End Of Weak #1", content: "Max Bench for 7 reps" },
-            { day: 8, title: "Stripe Strength", content: "Bike ride for 8km" },
-            { day: 9, title: "Sweet Balance", content: "9 push ups, each with a 9 second decent" },
+            { day: 4, title: "Deck The Halls (with your fists)", content: "Punches for 4 minutes" },
+            { day: 5, title: "5 Golden Kms", content: "Run/Walk/Cycle, 5 Golden Kms" },
+            { day: 6, title: "Hyrox Class #1: Jingle Bell, Jingle Bell, Jingle Bell Rox", content: "6 Press ups, 6 Burpees, 6 Lunges, 6 Squat Jumps, 6 Star Jumps" },
+            { day: 7, title: "End Of Weak #1: Bench-ing Through The Snow", content: "Max Bench for 7 reps" },
+            { day: 8, title: "Tour De Christmas", content: "Bike ride for 8km" },
+            { day: 9, title: "Press The Halls", content: "9 push ups, each with a 9 second decent" },
             { day: 10, title: "Show Off!", content: "Do the coolest exercise you know, and make it look 10/10" },
-            { day: 11, title: "Peppermint Power Walk", content: "11 Lengths of Farmers carries" },
-            { day: 12, title: "Stripe Stretch", content: "Lift something silly 12 times" },
-            { day: 13, title: "Hyrox Class #2", content: "13 Press ups, 13 Burpees, 13 Squat Jumps, 13 Star Jumps" },
-            { day: 14, title: "End Of Weak #2", content: "Another 7 days down, so max Squat for 7 reps" },
+            { day: 11, title: "The Festive Farmers Mood", content: "11 Lengths of Farmers carries" },
+            { day: 12, title: "The Sillier, The Merrier", content: "Lift something silly 12 times" },
+            { day: 13, title: "Hyrox Class #2: Jingle Bell, Jingle Bell, Jingle Bell Rox", content: "13 Press ups, 13 Burpees, 13 Lunges, 13 Squat Jumps, 13 Star Jumps" },
+            { day: 14, title: "End Of Weak #2: Squat like there's snow tomorrow", content: "Another 7 days down, so max Squat for 7 reps" },
             { day: 15, title: "Bop It!", content: "To be added later" },
-            { day: 16, title: "Stripe Sprint", content: "Run for 16 seconds, then walk for 16 seconds. Repeat 16 times 🏃‍♂️" },
-            { day: 17, title: "Sweet Stability", content: "17 lengths of burpee broad jumps" },
-            { day: 18, title: "Candy Cane Climb", content: "18 reps of ground to overhead (use whatever you have on hand)" },
-            { day: 19, title: "Title to come", content: "19 pulls ups total, use bands if you need to" },
-            { day: 20, title: "Hyrox Class #3", content: "20 press ups, 20 squat jumps, 20 star jumps, and 20 burpees" },
-            { day: 21, title: "End Of Weak #3", content: "Another 7 days down, so max Deadlift for 7 reps" },
-            { day: 22, title: "Candy Cane Challenge", content: "22 lunges for each leg" },
-            { day: 23, title: "Peppermint Recovery", content: "23 Pistol Squats for each leg" },
+            { day: 16, title: "A run that keeps on giving", content: "Run for 16 seconds, then walk for 16 seconds. Repeat 16 times 🏃‍♂️" },
+            { day: 17, title: "Tis The Burpees To Be Jolly", content: "17 lengths of burpee broad jumps" },
+            { day: 18, title: "In High Spirits", content: "18 reps of ground to overhead (use whatever you have on hand)" },
+            { day: 19, title: "Santa Claus Is Pulling Up To Town", content: "19 pulls ups total, use bands if you need to" },
+            { day: 20, title: "Hyrox Class #3: Jingle Bell, Jingle Bell, Jingle Bell Rox", content: "20 press ups, 20 squat jumps, 20 Lunges, 20 star jumps, and 20 burpees" },
+            { day: 21, title: "End Of Weak #3: Deadlifts in a winter wonderland", content: "Another 7 days down, so max Deadlift for 7 reps" },
+            { day: 22, title: "All I want for Christmas is glutes", content: "22 lunges for each leg" },
+            { day: 23, title: "Come Bearing Gifts And Arms", content: "23 Pistol Squats for each leg" },
             { day: 24, title: "Secret Santa!", content: "24 reps of the Secret Santa exercise exchange" }
         ];
         
-        this.completedChallenges = JSON.parse(localStorage.getItem('completedChallenges')) || [];
-        this.challengeNotes = JSON.parse(localStorage.getItem('challengeNotes')) || {};
         this.currentDay = new Date().getDate();
         this.currentMonth = new Date().getMonth();
         
@@ -38,7 +36,6 @@ class CandyCaneAdventCalendar {
     init() {
         this.generateCalendar();
         this.setupEventListeners();
-        this.updateProgress();
     }
     
     generateCalendar() {
@@ -60,11 +57,10 @@ class CandyCaneAdventCalendar {
         // Add calendar doors for December 1-24
         for (let day = 1; day <= 24; day++) {
             const challenge = this.challenges.find(c => c.day === day);
-            const isCompleted = this.completedChallenges.includes(day);
             const isToday = this.isToday(day);
             const isLocked = this.isLocked(day);
             
-            const doorElement = this.createCalendarDoor(day, challenge, isCompleted, isToday, isLocked);
+            const doorElement = this.createCalendarDoor(day, challenge, isToday, isLocked);
             calendarGrid.appendChild(doorElement);
         }
         
@@ -79,29 +75,24 @@ class CandyCaneAdventCalendar {
         }
     }
     
-    createCalendarDoor(day, challenge, isCompleted, isToday, isLocked) {
+    createCalendarDoor(day, challenge, isToday, isLocked) {
         const door = document.createElement('div');
         door.className = 'calendar-door';
         door.dataset.day = day;
         
-        if (isCompleted) door.classList.add('completed');
         if (isToday) door.classList.add('today');
         if (isLocked) door.classList.add('locked');
-        
-        const dayOfWeek = this.getDayOfWeek(day);
         
         const doorFront = document.createElement('div');
         doorFront.className = 'door-front';
         doorFront.innerHTML = `
             <div class="text-2xl font-bold">${day}</div>
-            <div class="day-of-week">${dayOfWeek}</div>
         `;
         
         const doorBack = document.createElement('div');
         doorBack.className = 'door-back';
         doorBack.innerHTML = `
             <div class="text-2xl font-bold">${day}</div>
-            <div class="day-of-week">${dayOfWeek}</div>
         `;
         
         door.appendChild(doorFront);
@@ -115,9 +106,9 @@ class CandyCaneAdventCalendar {
     }
     
     getDayOfWeek(day) {
-        // December 1, 2024 is a Sunday
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const startDay = 0; // Sunday
+        // December 1, 2024 is a Monday
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const startDay = 0; // Monday
         const dayIndex = (startDay + day - 1) % 7;
         return days[dayIndex];
     }
@@ -127,6 +118,7 @@ class CandyCaneAdventCalendar {
     }
     
     isLocked(day) {
+        return false;
         return this.currentMonth !== 11 || day > this.currentDay; // Only December, and not future days
     }
     
@@ -134,46 +126,19 @@ class CandyCaneAdventCalendar {
         const modal = document.getElementById('challengeModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalContent = document.getElementById('modalContent');
-        const noteSection = document.getElementById('noteSection');
-        const noteDisplay = document.getElementById('noteDisplay');
-        const noteText = document.getElementById('noteText');
         
-        modalTitle.textContent = `Day ${day} (${this.getDayOfWeek(day)})`;
+        modalTitle.textContent = `Day ${day}`;
         modalContent.innerHTML = `
             <h4 class="font-bold text-slate-800 mb-3">${challenge.title}</h4>
             <p class="text-gray-700 leading-relaxed">${challenge.content}</p>
         `;
         
-        // Show/hide note section based on existing note
-        const existingNote = this.challengeNotes[day];
-        if (existingNote) {
-            noteText.textContent = existingNote;
-            noteDisplay.classList.remove('hidden');
-            noteSection.classList.add('hidden');
-        } else {
-            noteDisplay.classList.add('hidden');
-            noteSection.classList.add('hidden');
-        }
-        
         modal.classList.remove('hidden');
-        modal.classList.add('modal-enter');
-        
-        // Store current day for note functionality
-        this.currentChallengeDay = day;
     }
     
     setupEventListeners() {
         // Close modal
         document.getElementById('closeModal').addEventListener('click', () => this.closeModal());
-        
-        // Mark complete
-        document.getElementById('markComplete').addEventListener('click', () => this.markChallengeComplete());
-        
-        // Add note
-        document.getElementById('addNote').addEventListener('click', () => this.toggleNoteSection());
-        
-        // Save note
-        document.getElementById('saveNote').addEventListener('click', () => this.saveNote());
         
         // Close modal when clicking outside
         document.getElementById('challengeModal').addEventListener('click', (e) => {
@@ -186,86 +151,10 @@ class CandyCaneAdventCalendar {
     closeModal() {
         const modal = document.getElementById('challengeModal');
         modal.classList.add('hidden');
-        modal.classList.remove('modal-enter');
-        
-        // Reset note section
-        document.getElementById('noteSection').classList.add('hidden');
-        document.getElementById('noteInput').value = '';
-    }
-    
-    markChallengeComplete() {
-        if (!this.currentChallengeDay) return;
-        
-        const day = this.currentChallengeDay;
-        
-        if (!this.completedChallenges.includes(day)) {
-            this.completedChallenges.push(day);
-            localStorage.setItem('completedChallenges', JSON.stringify(this.completedChallenges));
-            
-            // Update the door appearance
-            const door = document.querySelector(`[data-day="${day}"]`);
-            if (door) {
-                door.classList.add('completed');
-            }
-            
-            // Update progress
-            this.updateProgress();
-            
-            // Show success message
-            this.showSuccessMessage();
-            
-            // Close modal
-            this.closeModal();
-        }
-    }
-    
-    toggleNoteSection() {
-        const noteSection = document.getElementById('noteSection');
-        noteSection.classList.toggle('hidden');
-    }
-    
-    saveNote() {
-        if (!this.currentChallengeDay) return;
-        
-        const noteInput = document.getElementById('noteInput');
-        const note = noteInput.value.trim();
-        
-        if (note) {
-            this.challengeNotes[this.currentChallengeDay] = note;
-            localStorage.setItem('challengeNotes', JSON.stringify(this.challengeNotes));
-            
-            // Show the note
-            document.getElementById('noteText').textContent = note;
-            document.getElementById('noteDisplay').classList.remove('hidden');
-            document.getElementById('noteSection').classList.add('hidden');
-            noteInput.value = '';
-        }
-    }
-    
-    updateProgress() {
-        const completedCount = this.completedChallenges.length;
-        const remainingCount = 24 - completedCount;
-        const progressPercent = Math.round((completedCount / 24) * 100);
-        
-        document.getElementById('completedCount').textContent = completedCount;
-        document.getElementById('remainingCount').textContent = remainingCount;
-        document.getElementById('progressPercent').textContent = `${progressPercent}%`;
-        
-        const progressBar = document.getElementById('progressBar');
-        progressBar.style.width = `${progressPercent}%`;
-    }
-    
-    showSuccessMessage() {
-        const successMessage = document.getElementById('successMessage');
-        successMessage.classList.remove('translate-x-full');
-        
-        setTimeout(() => {
-            successMessage.classList.add('translate-x-full');
-        }, 3000);
     }
 }
 
 // Initialize the calendar when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    new CandyCaneAdventCalendar();
+    new AdventCalendar();
 });

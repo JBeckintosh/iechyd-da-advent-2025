@@ -1,13 +1,8 @@
 {
-  "name": "candy-cane-advent-calendar",
+  "name": "iechyd-da-fitness-advent-calendar",
   "version": "1.0.0",
-  "description": "A beautiful candy cane themed advent calendar website with daily challenges",
+  "description": "A beautiful candy cane and fitness themed advent calendar website with daily challenges",
   "main": "index.html",
-  "scripts": {
-    "start": "open index.html",
-    "dev": "python -m http.server 8000",
-    "serve": "npx http-server -p 8000"
-  },
   "keywords": [
     "advent-calendar",
     "candy-cane",

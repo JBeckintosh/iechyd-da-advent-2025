@@ -1,6 +1,6 @@
-# 🍭 Candy Cane Advent Calendar
+# 💪 Iechyd Da Fitness Advent Calendar 💪
 
-A beautiful, interactive advent calendar website themed with candy cane colors and festive design. Perfect for counting down the 24 days leading up to Christmas!
+A beautiful, interactive advent calendar website themed with candy cane colors and christmas festive design. Perfect for counting down the 24 days leading up to Christmas!
 
 ## ✨ Features
 
@@ -8,10 +8,7 @@ A beautiful, interactive advent calendar website themed with candy cane colors a
 - **Candy Cane Theme**: Beautiful red and white color scheme with festive stripes
 - **Interactive Doors**: Click to open each day and reveal your challenge
 - **Daily Challenges**: Fun fitness and wellness activities for each day
-- **Progress Tracking**: Monitor your completion progress with visual indicators
-- **Note Taking**: Add personal notes to each completed challenge
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
-- **Local Storage**: Your progress is saved locally in your browser
 
 ## 🎨 Design Features
 
@@ -32,13 +29,6 @@ A beautiful, interactive advent calendar website themed with candy cane colors a
 2. Open `index.html` in your web browser
 3. Start opening doors and completing challenges!
 
-### Alternative: Live Server
-If you have Node.js installed:
-```bash
-npx http-server
-```
-Then open `http://localhost:8080` in your browser.
-
 ## 📱 Responsive Design
 
 - **Desktop**: 7-column grid with day labels
@@ -56,20 +46,12 @@ Each day features a unique challenge including:
 - Recovery activities
 - Full-body workouts
 
-## 💾 Data Storage
-
-Your progress is automatically saved using:
-- **Local Storage**: Challenge completion status
-- **Notes**: Personal notes for each day
-- **Progress**: Visual progress indicators
-
 ## 🛠️ Technical Details
 
 - **HTML5**: Semantic structure and accessibility
 - **CSS3**: Custom animations, gradients, and responsive design
 - **JavaScript (ES6+)**: Interactive functionality and data management
 - **Tailwind CSS**: Utility-first styling framework
-- **Local Storage API**: Persistent data storage
 - **CSS Grid & Flexbox**: Modern layout techniques
 
 ## 🎨 Customization
@@ -149,4 +131,4 @@ Enjoy your candy cane themed advent calendar and have fun completing all 24 days
 
 ---
 
-*Built with ❤️ and 🍭 for the holiday season*
+*Built with ❤️, 💪, and 🍭 for the holiday season*
