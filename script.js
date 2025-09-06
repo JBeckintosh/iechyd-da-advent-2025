@@ -354,7 +354,7 @@ class AdventCalendar {
     speakExercise(exercise) {
         if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(exercise);
-            utterance.rate = 2.5;
+            utterance.rate = 3;
             utterance.pitch = 1.0;
             utterance.volume = 2.0;
             speechSynthesis.speak(utterance);
