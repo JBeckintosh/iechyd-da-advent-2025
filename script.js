@@ -183,11 +183,8 @@ class AdventCalendar {
                 <div class="text-center">
                     <div id="bopItInstructions" class="mb-6 p-6 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg border-2 border-blue-300">
                         If you aren't familiar with the Bop It game, it asks your to do a task which you have to finish before the timer runs out.
-                        This is an exercise version of that game.
-                        <br><br>
-                        <span class="text-sm text-gray-600">
-                            ${this.isIOSDevice() ? '📱 On iPhone/iPad: Exercise names will appear as visual notifications instead of audio.' : '🔊 You may want to turn the volume all the way up for audio cues.'}
-                        </span>
+                        This is an exercise version of that game
+                        You may want to turn the volume all the way up
                     </div>
                 </div>
                 <div class="text-center">
@@ -357,68 +354,13 @@ class AdventCalendar {
         }, 100);
     }
     
-    isIOSDevice() {
-        return /iPad|iPhone|iPod/.test(navigator.userAgent);
-    }
-    
     speakExercise(exercise) {
-        // Check if we're on iOS and if speechSynthesis is available
-        const isIOS = this.isIOSDevice();
-        const hasSpeechSynthesis = 'speechSynthesis' in window;
-        
-        if (hasSpeechSynthesis && !isIOS) {
-            // Use Web Speech API for non-iOS devices
-            try {
-                const utterance = new SpeechSynthesisUtterance(exercise);
-                utterance.rate = 3;
-                utterance.pitch = 1.0;
-                utterance.volume = 2.0;
-                
-                // Add error handling
-                utterance.onerror = (event) => {
-                    console.warn('Speech synthesis error:', event.error);
-                    this.showVisualFeedback(exercise);
-                };
-                
-                speechSynthesis.speak(utterance);
-            } catch (error) {
-                console.warn('Speech synthesis failed:', error);
-                this.showVisualFeedback(exercise);
-            }
-        } else {
-            // For iOS devices or when speechSynthesis is not available, show visual feedback
-            this.showVisualFeedback(exercise);
-        }
-    }
-    
-    showVisualFeedback(exercise) {
-        // Create a visual notification for the exercise
-        const notification = document.createElement('div');
-        notification.className = 'tts-notification fixed top-4 right-4 bg-red-600 text-white px-6 py-4 rounded-lg shadow-lg z-50 text-lg font-bold';
-        notification.textContent = `🔊 ${exercise}`;
-        
-        // Add to page
-        document.body.appendChild(notification);
-        
-        // Remove after 3 seconds with smooth animation
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.classList.add('removing');
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }
-        }, 3000);
-        
-        // Also update the exercise display with emphasis
-        const exerciseElement = document.getElementById('bopItExercise');
-        if (exerciseElement) {
-            exerciseElement.classList.add('highlight');
-            setTimeout(() => {
-                exerciseElement.classList.remove('highlight');
-            }, 2000);
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(exercise);
+            utterance.rate = 3;
+            utterance.pitch = 1.0;
+            utterance.volume = 2.0;
+            speechSynthesis.speak(utterance);
         }
     }
     
