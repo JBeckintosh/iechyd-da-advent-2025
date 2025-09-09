@@ -154,8 +154,7 @@ class AdventCalendar {
         return this.currentMonth === 11 && day === this.currentDay; // December is month 11
     }
     
-    isLocked(day) {
-        return false;
+    isLocked(day) 
         return this.currentMonth !== 11 || day > this.currentDay; // Only December, and not future days
     }
     
