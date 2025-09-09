@@ -7,7 +7,7 @@ class AdventCalendar {
         ];
 
         this.bopItExercises = [
-            "Burpee", "Press Up", "Squat", "Star Jump"
+            "Burpee", "Push Up", "Squat", "Jump"
         ];
         
         this.randomReps = [
@@ -26,9 +26,14 @@ class AdventCalendar {
             maxExercises: 24 // Maximum number of exercises
         };
         
-        // Audio file for exercise notifications
-        this.audioFile = 'cute-cat-meow-400946.mp3';
-        this.audioElement = null;
+        // Audio files for exercise notifications
+        this.audioFiles = {
+            'Burpee': 'Burpee.mp3',
+            'Push Up': 'Push Up.mp3',
+            'Squat': 'Squat.mp3',
+            'Jump': 'Jump.mp3'
+        };
+        this.audioElements = {};
         this.audioEnabled = false;
         
         this.challenges = [
@@ -192,7 +197,7 @@ class AdventCalendar {
                         This is an exercise version of that game.
                         <br><br>
                         <span class="text-sm text-gray-600">
-                            ${this.isIOSDevice() ? '📱 On iPhone/iPad: You\'ll hear a meow sound and see visual notifications for each exercise.' : '🔊 You\'ll hear a meow sound and spoken exercise names. Turn the volume up for audio cues!'}
+                            🔊 You'll hear exercise sounds for each exercise. Turn the volume up for audio cues!
                         </span>
                     </div>
                 </div>
@@ -204,7 +209,7 @@ class AdventCalendar {
                     </div>
                     <div class="space-y-3">
                         <button id="bopItStart" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
-                            Bop It!
+                            Start Game
                         </button>
                         <button id="bopItStop" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 hidden">
                             Stop Game
@@ -255,8 +260,10 @@ class AdventCalendar {
         exerciseText.textContent = `${randomExercise} - ${randomReps} reps`;
         exerciseResult.classList.remove('hidden');
         
-        // Play audio for the exercise
-        this.playAudio();
+        // Play specific audio for the exercise if it's one of the Bop It exercises
+        if (this.audioFiles[randomExercise]) {
+            this.playAudio(randomExercise);
+        }
         
         // Scroll to the result
         exerciseResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -327,8 +334,8 @@ class AdventCalendar {
         exerciseElement.textContent = this.bopItGame.currentExercise;
         exerciseNumber.textContent = this.bopItGame.exerciseCount;
         
-        // Speak the exercise
-        this.speakExercise(this.bopItGame.currentExercise);
+        // Play specific audio file for the exercise
+        this.playAudio(this.bopItGame.currentExercise);
         
         // Check if game should end
         if (this.bopItGame.exerciseCount >= this.bopItGame.maxExercises) {
@@ -372,33 +379,36 @@ class AdventCalendar {
         }, 100);
     }
     
-    isIOSDevice() {
-        return /iPad|iPhone|iPod/.test(navigator.userAgent);
-    }
     
     initializeAudio() {
-        if (this.audioElement) return; // Already initialized
+        if (Object.keys(this.audioElements).length > 0) return; // Already initialized
         
-        // Create audio element for exercise notifications
-        this.audioElement = new Audio(this.audioFile);
-        this.audioElement.preload = 'auto';
-        this.audioElement.volume = 0.7; // Set a reasonable volume level
-        
-        // Add error handling for audio loading
-        this.audioElement.addEventListener('error', (e) => {
-            console.warn('Audio file could not be loaded:', e);
+        // Create audio elements for each exercise
+        Object.keys(this.audioFiles).forEach(exercise => {
+            const audioFile = this.audioFiles[exercise];
+            this.audioElements[exercise] = new Audio(audioFile);
+            this.audioElements[exercise].preload = 'auto';
+            this.audioElements[exercise].volume = 0.7; // Set a reasonable volume level
+            
+            // Add error handling for audio loading
+            this.audioElements[exercise].addEventListener('error', (e) => {
+                console.warn(`Audio file ${audioFile} could not be loaded:`, e);
+            });
         });
         
-        // Try to enable audio by playing and immediately pausing
+        // Try to enable audio by playing and immediately pausing the first available audio
         this.enableAudio();
     }
     
     enableAudio() {
-        if (this.audioElement && !this.audioEnabled) {
-            // Try to play and immediately pause to enable audio for future plays
-            this.audioElement.play().then(() => {
-                this.audioElement.pause();
-                this.audioElement.currentTime = 0;
+        if (Object.keys(this.audioElements).length > 0 && !this.audioEnabled) {
+            // Try to play and immediately pause the first available audio to enable audio for future plays
+            const firstExercise = Object.keys(this.audioElements)[0];
+            const firstAudio = this.audioElements[firstExercise];
+            
+            firstAudio.play().then(() => {
+                firstAudio.pause();
+                firstAudio.currentTime = 0;
                 this.audioEnabled = true;
                 console.log('Audio enabled successfully');
             }).catch(error => {
@@ -408,88 +418,41 @@ class AdventCalendar {
         }
     }
     
-    playAudio() {
-        if (this.audioElement) {
+    playAudio(exercise = null) {
+        // If no specific exercise provided, try to play the first available audio
+        if (!exercise) {
+            const firstExercise = Object.keys(this.audioElements)[0];
+            if (firstExercise) {
+                this.playAudio(firstExercise);
+            }
+            return;
+        }
+        
+        if (this.audioElements[exercise]) {
             try {
                 // Reset audio to beginning and play
-                this.audioElement.currentTime = 0;
-                this.audioElement.play().then(() => {
+                this.audioElements[exercise].currentTime = 0;
+                this.audioElements[exercise].play().then(() => {
                     // Audio played successfully, mark as enabled
                     this.audioEnabled = true;
                 }).catch(error => {
-                    console.warn('Audio playback failed:', error);
+                    console.warn(`Audio playback failed for ${exercise}:`, error);
                     // Try to enable audio for next time
                     this.enableAudio();
                 });
             } catch (error) {
-                console.warn('Audio playback error:', error);
+                console.warn(`Audio playback error for ${exercise}:`, error);
             }
+        } else {
+            console.warn(`No audio file found for exercise: ${exercise}`);
         }
     }
     
     speakExercise(exercise) {
-        // Play audio notification for all devices
-        this.playAudio();
-        
-        // Check if we're on iOS and if speechSynthesis is available
-        const isIOS = this.isIOSDevice();
-        const hasSpeechSynthesis = 'speechSynthesis' in window;
-        
-        if (hasSpeechSynthesis && !isIOS) {
-            // Use Web Speech API for non-iOS devices
-            try {
-                const utterance = new SpeechSynthesisUtterance(exercise);
-                utterance.rate = 3;
-                utterance.pitch = 1.0;
-                utterance.volume = 2.0;
-                
-                // Add error handling
-                utterance.onerror = (event) => {
-                    console.warn('Speech synthesis error:', event.error);
-                    this.showVisualFeedback(exercise);
-                };
-                
-                speechSynthesis.speak(utterance);
-            } catch (error) {
-                console.warn('Speech synthesis failed:', error);
-                this.showVisualFeedback(exercise);
-            }
-        } else {
-            // For iOS devices or when speechSynthesis is not available, show visual feedback
-            this.showVisualFeedback(exercise);
-        }
+        // Play specific audio file for the exercise
+        this.playAudio(exercise);
     }
     
-    showVisualFeedback(exercise) {
-        // Create a visual notification for the exercise
-        const notification = document.createElement('div');
-        notification.className = 'tts-notification fixed top-4 right-4 bg-red-600 text-white px-6 py-4 rounded-lg shadow-lg z-50 text-xl font-bold';
-        notification.textContent = `🐱 ${exercise}`;
-        
-        // Add to page
-        document.body.appendChild(notification);
-        
-        // Remove after 3 seconds with smooth animation
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.classList.add('removing');
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }
-        }, 3000);
-        
-        // Also update the exercise display with emphasis
-        const exerciseElement = document.getElementById('bopItExercise');
-        if (exerciseElement) {
-            exerciseElement.classList.add('highlight');
-            setTimeout(() => {
-                exerciseElement.classList.remove('highlight');
-            }, 2000);
-        }
-    }
     
     stopBopItGame() {
         this.bopItGame.isRunning = false;
