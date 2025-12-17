@@ -59,7 +59,7 @@ class AdventCalendar {
             { day: 20, title: "Hyrox Class #3: Jingle Bell, Jingle Bell, Jingle Bell Rox", content: "20 press ups, 20 squat jumps, 20 Lunges, 20 star jumps, and 20 burpees" },
             { day: 21, title: "End Of Weak #3: Deadlifts In A Winter Wonderland", content: "Max Deadlift for 7 reps" },
             { day: 22, title: "All I Want For Christmas Is Glutes", content: "22 lunges for each leg" },
-            { day: 23, title: "Come Bearing Gifts And Arms", content: "23 Pistol Squats for each leg" },
+            { day: 23, title: "Come Bearing Gifts And Arms", content: "23 bicep curls for each arm (use whatever you have on hand)" },
             { day: 24, title: "Secret Santa!", content: "You should be getting a message from your secret santa. If you don't, you're off the hook and merry xmas! If you didn't do secret santa, do 24 reps of your favourite exericse in a santa hat." }
         ];
         
