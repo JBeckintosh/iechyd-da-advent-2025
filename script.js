@@ -53,7 +53,7 @@ class AdventCalendar {
             { day: 14, title: "End Of Weak #2: Squat Like There's Snow Tomorrow", content: "Max Squat for 7 reps" },
             { day: 15, title: "Bop It!", content: "bopItGame" },
             { day: 16, title: "A Run That Keeps On Giving", content: "Run for 16 seconds, then walk for 16 seconds. Repeat 16 times 🏃‍♂️" },
-            { day: 17, title: "Tis Some Burpees To Be Jolly", content: "17 lengths of burpee broad jumps" },
+            { day: 17, title: "Tis Some Broad Jumps To Be Jolly", content: "17 lengths of broad jumps" },
             { day: 18, title: "In High Spirits", content: "18 reps of ground to overhead (use whatever you have on hand)" },
             { day: 19, title: "Santa Claus Is Pulling Up To Town", content: "19 pulls ups total, use bands if you need to" },
             { day: 20, title: "Hyrox Class #3: Jingle Bell, Jingle Bell, Jingle Bell Rox", content: "20 press ups, 20 squat jumps, 20 Lunges, 20 star jumps, and 20 burpees" },
