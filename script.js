@@ -94,10 +94,8 @@ class AdventCalendar {
         // Add calendar doors for December 1-24
         for (let day = 1; day <= 24; day++) {
             const challenge = this.challenges.find(c => c.day === day);
-            const isToday = this.isToday(day);
-            const isLocked = this.isLocked(day);
             
-            const doorElement = this.createCalendarDoor(day, challenge, isToday, isLocked);
+            const doorElement = this.createCalendarDoor(day, challenge);
             calendarGrid.appendChild(doorElement);
         }
         
@@ -112,13 +110,10 @@ class AdventCalendar {
         }
     }
     
-    createCalendarDoor(day, challenge, isToday, isLocked) {
+    createCalendarDoor(day, challenge) {
         const door = document.createElement('div');
         door.className = 'calendar-door';
         door.dataset.day = day;
-        
-        if (isToday) door.classList.add('today');
-        if (isLocked) door.classList.add('locked');
         
         const doorFront = document.createElement('div');
         doorFront.className = 'door-front';
@@ -135,9 +130,7 @@ class AdventCalendar {
         door.appendChild(doorFront);
         door.appendChild(doorBack);
         
-        if (!isLocked) {
-            door.addEventListener('click', () => this.openDoor(day, challenge));
-        }
+        door.addEventListener('click', () => this.openDoor(day, challenge));
         
         return door;
     }
@@ -148,14 +141,6 @@ class AdventCalendar {
         const startDay = 0; // Monday
         const dayIndex = (startDay + day - 1) % 7;
         return days[dayIndex];
-    }
-    
-    isToday(day) {
-        return this.currentMonth === 11 && day === this.currentDay; // December is month 11
-    }
-    
-    isLocked(day) {
-        return this.currentMonth !== 11 || day > this.currentDay; // Only December, and not future days
     }
     
     openDoor(day, challenge) {
